@@ -1,0 +1,1899 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biotipo - Relatório de Performance - Maio 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #050814;
+            --bg-card: rgba(11, 18, 38, 0.6);
+            --bg-card-hover: rgba(16, 26, 54, 0.85);
+            --border-card: rgba(255, 255, 255, 0.08);
+            --accent: #00f0ff;
+            --accent-glow: rgba(0, 240, 255, 0.15);
+            --accent-rgb: 0, 240, 255;
+            --meta-color: #1877F2;
+            --google-color: #ea4335;
+            --tiktok-color: #ff0050;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --positive: #00e676;
+            --positive-glow: rgba(0, 230, 118, 0.15);
+            --warning: #ffb300;
+            --warning-glow: rgba(255, 179, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Cover Section styling */
+        .cover-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle at 80% 20%, rgba(0, 240, 255, 0.12) 0%, transparent 50%),
+                        radial-gradient(circle at 10% 80%, rgba(24, 119, 242, 0.08) 0%, transparent 50%);
+            padding: 2rem;
+            border-bottom: 1px solid var(--border-card);
+        }
+
+        .cover-glow {
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, transparent 70%);
+            top: 20%;
+            left: 5%;
+            filter: blur(60px);
+            pointer-events: none;
+        }
+
+        .cover-content {
+            max-width: 1050px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .cover-left h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.75rem;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            background: linear-gradient(135deg, #ffffff 30%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        .cover-left p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .cover-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 99px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .cover-right {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cover-art {
+            width: 340px;
+            height: 340px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(6,9,19,0.9) 0%, rgba(13,20,38,0.4) 100%);
+            border: 2px solid rgba(0, 240, 255, 0.25);
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.15);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .cover-art::before {
+            content: '';
+            position: absolute;
+            inset: 10px;
+            border-radius: 50%;
+            border: 1px dashed rgba(0, 240, 255, 0.3);
+            animation: rotateClockwise 20s linear infinite;
+        }
+
+        .cover-art::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 20%;
+            right: 20%;
+            bottom: 20%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.4) 0%, rgba(24, 119, 242, 0.1) 100%);
+            filter: blur(20px);
+            opacity: 0.8;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes rotateClockwise {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* App Layout Grid */
+        .app-container {
+            display: grid;
+            grid-template-columns: 290px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            background-color: #070b16;
+            border-right: 1px solid var(--border-card);
+            padding: 2.5rem 1.25rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 100;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .logo-text {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            outline: none;
+            padding: 0.25rem;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: grab;
+            border: 1px solid transparent;
+        }
+        
+        .nav-item:active {
+            cursor: grabbing;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 0.75rem 0.85rem;
+            width: 100%;
+            font-size: 0.925rem;
+            font-weight: 500;
+            outline: none;
+        }
+
+        .nav-item.active a, .nav-item a:hover {
+            color: #fff;
+            background: rgba(0, 240, 255, 0.08);
+            border-left: 3px solid var(--accent);
+            padding-left: calc(0.85rem - 3px);
+        }
+
+        .nav-item.drag-over {
+            border: 1px dashed var(--accent);
+            background: rgba(0, 240, 255, 0.04);
+        }
+
+        .footer-branding {
+            border-top: 1px solid var(--border-card);
+            padding-top: 1.5rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .footer-branding strong {
+            color: var(--text-main);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .fullscreen-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            color: var(--accent);
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            padding: 3rem;
+            background-color: var(--bg-main);
+            background-image: radial-gradient(circle at 50% 0%, rgba(11, 18, 38, 0.25) 0%, transparent 60%);
+        }
+
+        /* Dashboard Header */
+        .dash-header {
+            margin-bottom: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 1px solid var(--border-card);
+            padding-bottom: 1.5rem;
+        }
+
+        .dash-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            outline: none;
+        }
+
+        .dash-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 0.25rem;
+            outline: none;
+        }
+
+        /* Section Layouts */
+        .section-block {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        .section-block.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(0, 240, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            background: var(--bg-card-hover);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            outline: none;
+        }
+
+        .card-title-icon {
+            width: 8px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        /* KPI Grids */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .kpi-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-grad, var(--accent));
+        }
+
+        .kpi-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateY(-3px);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .kpi-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            outline: none;
+        }
+
+        .kpi-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.2;
+            outline: none;
+        }
+
+        .kpi-subtext {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            outline: none;
+        }
+
+        /* Funnel CSS */
+        .funnel-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            max-width: 650px;
+            margin: 2rem auto;
+        }
+
+        .funnel-stage {
+            display: flex;
+            align-items: center;
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            height: 52px;
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .funnel-stage:hover {
+            transform: scale(1.02);
+        }
+
+        .funnel-label {
+            width: 30%;
+            padding-left: 1.5rem;
+            z-index: 2;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        }
+
+        .funnel-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--funnel-color, var(--accent)) 0%, rgba(var(--accent-rgb), 0.2) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 1.5rem;
+            border-radius: 6px;
+            z-index: 1;
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.1);
+        }
+
+        .funnel-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+
+        /* Strategy blocks */
+        .strategy-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .strategy-block {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .strategy-block h4 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            outline: none;
+        }
+
+        .strategy-block p {
+            outline: none;
+            color: var(--text-muted);
+            font-size: 0.925rem;
+        }
+
+        /* Tables styling */
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-card);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.875rem;
+        }
+
+        th {
+            background: rgba(11, 18, 38, 0.9);
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-card);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+            color: #fff;
+        }
+
+        .campaign-name {
+            color: #fff;
+            font-weight: 500;
+            max-width: 250px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Status colors */
+        .badge-positive {
+            background: rgba(0, 230, 118, 0.12);
+            color: var(--positive);
+            border: 1px solid rgba(0, 230, 118, 0.25);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-warning {
+            background: rgba(255, 179, 0, 0.12);
+            color: var(--warning);
+            border: 1px solid rgba(255, 179, 0, 0.25);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-info {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .footer-logo-mike {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: #fff;
+            letter-spacing: 2px;
+            outline: none;
+        }
+
+        .footer-logo-mike span {
+            color: var(--accent);
+        }
+
+        /* Final Presentation Section Styling */
+        .final-presentation-block {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 85vh;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .thank-you-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+            outline: none;
+        }
+
+        .final-branding-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            padding: 2.5rem;
+            max-width: 600px;
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .closing-footer-layout {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .closing-divider {
+            width: 1px;
+            height: 50px;
+            background-color: rgba(255,255,255,0.15);
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div>
+            <div class="logo-area">
+                <div class="logo-text" id="sidebar-logo-title" contenteditable="true">Biotipo</div>
+            </div>
+            
+            <nav>
+                <ul class="nav-list" id="sidebarNavList">
+                    <li class="nav-item active" data-target="cover" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragend="handleDragEnd(event)"><a href="#cover"><span id="nav-cover-text" contenteditable="true">Capa do Relatório</span></a></li>
+                    <li class="nav-item" data-target="meta-ads" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragend="handleDragEnd(event)"><a href="#meta-ads"><span id="nav-meta-text" contenteditable="true">Meta Ads</span></a></li>
+                    <li class="nav-item" data-target="google-ads" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragend="handleDragEnd(event)"><a href="#google-ads"><span id="nav-google-text" contenteditable="true">Google Ads</span></a></li>
+                    <li class="nav-item" data-target="tiktok-ads" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragend="handleDragEnd(event)"><a href="#tiktok-ads"><span id="nav-tiktok-text" contenteditable="true">TikTok Ads</span></a></li>
+                    <li class="nav-item" data-target="consolidado-plataformas" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragend="handleDragEnd(event)"><a href="#consolidado-plataformas"><span id="nav-resumo-text" contenteditable="true">Resumo por Rede</span></a></li>
+                    <li class="nav-item" data-target="consolidado-geral" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragend="handleDragEnd(event)"><a href="#consolidado-geral"><span id="nav-globais-text" contenteditable="true">Resultados Globais</span></a></li>
+                    <li class="nav-item" data-target="next-steps" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragend="handleDragEnd(event)"><a href="#next-steps"><span id="nav-passos-text" contenteditable="true">Próximos Passos</span></a></li>
+                    <li class="nav-item" data-target="finalizacao" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragend="handleDragEnd(event)"><a href="#finalizacao"><span id="nav-thanks-text" contenteditable="true">Agradecimento</span></a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div>
+            <!-- Fullscreen presentation trigger button -->
+            <button class="fullscreen-btn" onclick="toggleFullScreen()">
+                <span>📺 Tela Cheia</span>
+            </button>
+            
+            <div class="footer-branding">
+                <strong id="footer-brand-date" contenteditable="true">Maio 2026</strong>
+                <span id="footer-brand-label" contenteditable="true">Performance Dashboard</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- COVER SECTION -->
+        <section id="cover" class="section-block active">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+                <div class="cover-badge" id="cover-badge-text" contenteditable="true">🏆 Dashboard de Performance</div>
+            </div>
+            
+            <div class="cover-content" style="margin-top: 4rem;">
+                <div class="cover-left">
+                    <h1 id="cover-main-h1" contenteditable="true">Relatório de Tráfego Pago</h1>
+                    <p style="font-size: 1.75rem; color: #fff; margin-bottom: 0.75rem; font-family: 'Outfit';" id="cover-brand-name" contenteditable="true">Biotipo</p>
+                    <p style="font-size: 1.15rem; color: var(--text-muted); font-weight: 300; margin-bottom: 4rem;" id="cover-description-p" contenteditable="true">Análise estratégica consolidada do tráfego pago, faturamento e geração de leads para as contas de Meta Ads, Google Ads e TikTok Ads durante o período de Maio de 2026.</p>
+                    
+                    <!-- Cover Signature Block -->
+                    <div class="closing-footer-layout" style="justify-content: flex-start; margin-top: 2rem;">
+                        <img src="logo-quantika.png" style="height: 35px; object-fit: contain; filter: drop-shadow(0 0 5px rgba(0,240,255,0.3));" alt="QUÂNTIKA Logo">
+                        <div class="footer-logo-mike" style="margin-left: -0.5rem;" id="cover-quantika-sig" contenteditable="true">QUÂNTIKA</div>
+                        <div class="closing-divider"></div>
+                        <div style="text-align: left; font-size: 0.8rem; color: var(--text-muted);">
+                            <strong style="color: #fff; display: block; margin-bottom: 0.25rem;" id="cover-biotipo-sig" contenteditable="true">BIOTIPO</strong>
+                            <span id="cover-sub-sig" contenteditable="true">Gestão de Mídia & Analytics | Maio 2026</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="cover-right">
+                    <div class="cover-art" style="display: flex; justify-content: center; align-items: center;">
+                        <img src="logo-quantika.png" style="width: 140px; height: 140px; object-fit: contain; filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.4));" alt="QUÂNTIKA Logo">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- META ADS DETAILED -->
+        <section id="meta-ads" class="section-block">
+            <div class="dash-header">
+                <div>
+                    <h2 id="meta-main-h2" contenteditable="true">Meta Ads (Facebook & Instagram)</h2>
+                    <p id="meta-main-p" contenteditable="true">Detalhamento dos resultados divididos pelas 3 contas de anúncios</p>
+                </div>
+            </div>
+
+            <!-- CONTA 01 -->
+            <div class="glass-card">
+                <div class="card-header">
+                    <div class="card-title" id="meta-c1-title" contenteditable="true">
+                        <div class="card-title-icon" style="background: var(--meta-color)"></div>
+                        Conta 01 - Biotipo (Site e Mensagens)
+                    </div>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card" style="--accent: var(--meta-color)">
+                        <div class="kpi-label" id="meta-c1-kpi1-label" contenteditable="true">Investimento</div>
+                        <div class="kpi-value" id="meta-c1-kpi1-val" contenteditable="true">R$ 33.846,54</div>
+                    </div>
+                    <div class="kpi-card" style="--accent: var(--positive)">
+                        <div class="kpi-label" id="meta-c1-kpi2-label" contenteditable="true">Valor de Conversão</div>
+                        <div class="kpi-value" id="meta-c1-kpi2-val" contenteditable="true">R$ 101.337,38</div>
+                    </div>
+                    <div class="kpi-card" style="--accent: var(--positive)">
+                        <div class="kpi-label" id="meta-c1-kpi3-label" contenteditable="true">ROAS</div>
+                        <div class="kpi-value" id="meta-c1-kpi3-val" contenteditable="true">2,99</div>
+                    </div>
+                    <div class="kpi-card" style="--accent: var(--meta-color)">
+                        <div class="kpi-label" id="meta-c1-kpi4-label" contenteditable="true">Vendas (Site)</div>
+                        <div class="kpi-value" id="meta-c1-kpi4-val" contenteditable="true">300</div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome da Campanha</th>
+                                <th>Vendas (Site)</th>
+                                <th>Mensagens</th>
+                                <th>Vis. Página</th>
+                                <th>Alcance</th>
+                                <th>Cliques</th>
+                                <th>Impressões</th>
+                                <th>CTR</th>
+                                <th>ROAS</th>
+                                <th>Custo/Lead</th>
+                                <th>Custo/Clique</th>
+                                <th>Valor Investido</th>
+                                <th>Valor Conversão</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="campaign-name">[MM] [DNF-10] [CONVERSÃO SITE] 1</td>
+                                <td>135</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>51.391</td>
+                                <td>7.110</td>
+                                <td>333.415</td>
+                                <td>2,67%</td>
+                                <td><span class="badge-positive">3,54</span></td>
+                                <td>—</td>
+                                <td>R$ 1,65</td>
+                                <td>R$ 14.700,46</td>
+                                <td>R$ 51.986,24</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [PURCHASE] [MITBURN] [SITE] 1</td>
+                                <td>47</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>43.390</td>
+                                <td>2.590</td>
+                                <td>129.217</td>
+                                <td>2,84%</td>
+                                <td><span class="badge-positive">3,60</span></td>
+                                <td>—</td>
+                                <td>R$ 1,13</td>
+                                <td>R$ 4.147,06</td>
+                                <td>R$ 14.917,79</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [TRÁFEGO SITE] 1</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>25.658</td>
+                                <td>273.703</td>
+                                <td>32.494</td>
+                                <td>523.245</td>
+                                <td>7,81%</td>
+                                <td><span class="badge-warning">0,34</span></td>
+                                <td>—</td>
+                                <td>R$ 0,08</td>
+                                <td>R$ 3.193,55</td>
+                                <td>R$ 1.086,39</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [MENSAGENS] [RECEITA] 1</td>
+                                <td>—</td>
+                                <td>142</td>
+                                <td>—</td>
+                                <td>49.036</td>
+                                <td>499</td>
+                                <td>165.764</td>
+                                <td>1,02%</td>
+                                <td><span class="badge-warning">0,08</span></td>
+                                <td>R$ 17,92</td>
+                                <td>R$ 1,50</td>
+                                <td>R$ 2.545,23</td>
+                                <td>R$ 199,21</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [COMBO PEPTÍDEOS DA BELEZA] [CONVERSÃO SITE] 1</td>
+                                <td>28</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>15.833</td>
+                                <td>1.552</td>
+                                <td>55.069</td>
+                                <td>3,58%</td>
+                                <td><span class="badge-positive">3,53</span></td>
+                                <td>—</td>
+                                <td>R$ 1,25</td>
+                                <td>R$ 2.376,30</td>
+                                <td>R$ 8.392,82</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [PEPTÍDEOS DA BELEZA] [CONVERSÃO SITE] 1</td>
+                                <td>25</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>15.285</td>
+                                <td>1.569</td>
+                                <td>38.697</td>
+                                <td>5,03%</td>
+                                <td><span class="badge-positive">3,52</span></td>
+                                <td>—</td>
+                                <td>R$ 0,96</td>
+                                <td>R$ 1.864,52</td>
+                                <td>R$ 6.567,60</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [BLOQUEADOR DE CARBO] [CONVERSÃO SITE] 1</td>
+                                <td>33</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>25.101</td>
+                                <td>950</td>
+                                <td>68.380</td>
+                                <td>1,72%</td>
+                                <td><span class="badge-positive">5,60</span></td>
+                                <td>—</td>
+                                <td>R$ 1,27</td>
+                                <td>R$ 1.495,70</td>
+                                <td>R$ 8.375,99</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [HS FOCUS NAD] [CONVERSÃO SITE] 1</td>
+                                <td>8</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>8.220</td>
+                                <td>445</td>
+                                <td>16.007</td>
+                                <td>3,31%</td>
+                                <td><span class="badge-positive">2,33</span></td>
+                                <td>—</td>
+                                <td>R$ 1,97</td>
+                                <td>R$ 1.099,70</td>
+                                <td>R$ 2.562,99</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [BIO RETINAL SHOT] [CONVERSÃO SITE] 1</td>
+                                <td>9</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>4.634</td>
+                                <td>426</td>
+                                <td>7.875</td>
+                                <td>5,96%</td>
+                                <td><span class="badge-positive">3,20</span></td>
+                                <td>—</td>
+                                <td>R$ 1,17</td>
+                                <td>R$ 548,81</td>
+                                <td>R$ 1.755,49</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [PURCHASE] [DRENANTE] 1</td>
+                                <td>6</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>3.802</td>
+                                <td>176</td>
+                                <td>7.368</td>
+                                <td>2,84%</td>
+                                <td><span class="badge-positive">2,48</span></td>
+                                <td>—</td>
+                                <td>R$ 2,90</td>
+                                <td>R$ 606,62</td>
+                                <td>R$ 1.506,54</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [GENU-IN LIFE] [CONVERSÃO SITE] 1</td>
+                                <td>3</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>3.479</td>
+                                <td>280</td>
+                                <td>7.027</td>
+                                <td>4,16%</td>
+                                <td><span class="badge-positive">2,53</span></td>
+                                <td>—</td>
+                                <td>R$ 1,48</td>
+                                <td>R$ 432,00</td>
+                                <td>R$ 1.095,02</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [PHYTGEN] [CONVERSÃO SITE] 1</td>
+                                <td>5</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>2.702</td>
+                                <td>150</td>
+                                <td>6.339</td>
+                                <td>3,01%</td>
+                                <td><span class="badge-positive">4,95</span></td>
+                                <td>—</td>
+                                <td>R$ 2,56</td>
+                                <td>R$ 489,57</td>
+                                <td>R$ 2.422,73</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] INSTITUCIONAL - VIDEOVIEW 1</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>5.768</td>
+                                <td>3.057</td>
+                                <td>—</td>
+                                <td>6.684</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>R$ 182,89</td>
+                                <td>R$ 0,00</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [COMBO DNF-10 + NEW DETOX SOLUTION] [CONVERSÃO SITE] 1</td>
+                                <td>1</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>2.021</td>
+                                <td>75</td>
+                                <td>3.555</td>
+                                <td>2,45%</td>
+                                <td><span class="badge-positive">2,85</span></td>
+                                <td>—</td>
+                                <td>R$ 1,89</td>
+                                <td>R$ 164,13</td>
+                                <td>R$ 468,57</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CONTA 02 -->
+            <div class="glass-card">
+                <div class="card-header">
+                    <div class="card-title" id="meta-c2-title" contenteditable="true">
+                        <div class="card-title-icon" style="background: var(--meta-color)"></div>
+                        Conta 02 - Grupo Biotipo v3 (Mensagens WhatsApp)
+                    </div>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card" style="--accent: var(--meta-color)">
+                        <div class="kpi-label" id="meta-c2-kpi1-label" contenteditable="true">Mensagens Recebidas</div>
+                        <div class="kpi-value" id="meta-c2-kpi1-val" contenteditable="true">165</div>
+                    </div>
+                    <div class="kpi-card" style="--accent: var(--meta-color)">
+                        <div class="kpi-label" id="meta-c2-kpi2-label" contenteditable="true">Custo Médio por Lead</div>
+                        <div class="kpi-value" id="meta-c2-kpi2-val" contenteditable="true">R$ 25,74</div>
+                    </div>
+                    <div class="kpi-card" style="--accent: var(--meta-color)">
+                        <div class="kpi-label" id="meta-c2-kpi3-label" contenteditable="true">Cliques Totais</div>
+                        <div class="kpi-value" id="meta-c2-kpi3-val" contenteditable="true">1.751</div>
+                    </div>
+                    <div class="kpi-card" style="--accent: var(--meta-color)">
+                        <div class="kpi-label" id="meta-c2-kpi4-label" contenteditable="true">Impressões</div>
+                        <div class="kpi-value" id="meta-c2-kpi4-val" contenteditable="true">151.116</div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome da Campanha</th>
+                                <th>Vendas (Site)</th>
+                                <th>Mensagens</th>
+                                <th>Vis. Página</th>
+                                <th>Alcance</th>
+                                <th>Cliques</th>
+                                <th>Impressões</th>
+                                <th>CTR</th>
+                                <th>Custo/Lead</th>
+                                <th>Custo/Clique</th>
+                                <th>Valor Investido</th>
+                                <th>Valor Conversão</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="campaign-name">[MM] [MENSAGENS] — RECEITA 2.2</td>
+                                <td>—</td>
+                                <td>84</td>
+                                <td>—</td>
+                                <td>27.401</td>
+                                <td>871</td>
+                                <td>69.760</td>
+                                <td>1,25%</td>
+                                <td><span class="badge-warning">R$ 25,23</span></td>
+                                <td>R$ 2,43</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [MENSAGENS] — RECEITA 2</td>
+                                <td>—</td>
+                                <td>81</td>
+                                <td>—</td>
+                                <td>26.962</td>
+                                <td>880</td>
+                                <td>81.356</td>
+                                <td>1,08%</td>
+                                <td><span class="badge-warning">R$ 26,25</span></td>
+                                <td>R$ 2,42</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CONTA 04 -->
+            <div class="glass-card">
+                <div class="card-header">
+                    <div class="card-title" id="meta-c4-title" contenteditable="true">
+                        <div class="card-title-icon" style="background: var(--meta-color)"></div>
+                        Conta 04 - Biotipo Reserva 2 (Conversões & Contatos)
+                    </div>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card" style="--accent: var(--meta-color)">
+                        <div class="kpi-label" id="meta-c4-kpi1-label" contenteditable="true">Investimento</div>
+                        <div class="kpi-value" id="meta-c4-kpi1-val" contenteditable="true">R$ 5.579,54</div>
+                    </div>
+                    <div class="kpi-card" style="--accent: var(--positive)">
+                        <div class="kpi-label" id="meta-c4-kpi2-label" contenteditable="true">Valor de Conversão</div>
+                        <div class="kpi-value" id="meta-c4-kpi2-val" contenteditable="true">R$ 17.747,05</div>
+                    </div>
+                    <div class="kpi-card" style="--accent: var(--positive)">
+                        <div class="kpi-label" id="meta-c4-kpi3-label" contenteditable="true">ROAS</div>
+                        <div class="kpi-value" id="meta-c4-kpi3-val" contenteditable="true">3,18</div>
+                    </div>
+                    <div class="kpi-card" style="--accent: var(--meta-color)">
+                        <div class="kpi-label" id="meta-c4-kpi4-label" contenteditable="true">Mensagens</div>
+                        <div class="kpi-value" id="meta-c4-kpi4-val" contenteditable="true">1.822</div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome da Campanha</th>
+                                <th>Vendas (Site)</th>
+                                <th>Mensagens</th>
+                                <th>Vis. Página</th>
+                                <th>Alcance</th>
+                                <th>Cliques</th>
+                                <th>Impressões</th>
+                                <th>CTR</th>
+                                <th>ROAS</th>
+                                <th>Custo/Lead</th>
+                                <th>Custo/Clique</th>
+                                <th>Valor Investido</th>
+                                <th>Valor Conversão</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="campaign-name">[MM] [PURCHASE] [DNF-10] 4</td>
+                                <td>35</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>18.577</td>
+                                <td>2.503</td>
+                                <td>54.525</td>
+                                <td>4,59%</td>
+                                <td><span class="badge-positive">5,08</span></td>
+                                <td>—</td>
+                                <td>R$ 0,99</td>
+                                <td>R$ 2.467,73</td>
+                                <td>R$ 12.536,53</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [PURCHASE] [BYE BYE] 4</td>
+                                <td>12</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>18.653</td>
+                                <td>814</td>
+                                <td>79.761</td>
+                                <td>1,02%</td>
+                                <td><span class="badge-positive">2,72</span></td>
+                                <td>—</td>
+                                <td>R$ 1,94</td>
+                                <td>R$ 1.577,26</td>
+                                <td>R$ 4.285,93</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] MENSAGENS - MILENE 4</td>
+                                <td>—</td>
+                                <td>1.822</td>
+                                <td>—</td>
+                                <td>35.118</td>
+                                <td>5.341</td>
+                                <td>75.453</td>
+                                <td>7,08%</td>
+                                <td>—</td>
+                                <td><span class="badge-positive" style="background: rgba(0, 230, 118, 0.18);">R$ 0,84</span></td>
+                                <td>R$ 0,29</td>
+                                <td>R$ 1.534,55</td>
+                                <td>R$ 924,59</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- GOOGLE ADS SECTION -->
+        <section id="google-ads" class="section-block">
+            <div class="dash-header">
+                <div>
+                    <h2 id="google-main-h2" contenteditable="true">Google Ads</h2>
+                    <p id="google-main-p" contenteditable="true">Performance detalhada por campanhas e rede no mês de Maio 2026</p>
+                </div>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card" style="--accent: var(--google-color)">
+                    <div class="kpi-label" id="google-kpi1-label" contenteditable="true">Valor Investido</div>
+                    <div class="kpi-value" id="google-kpi1-val" contenteditable="true">R$ 4.751,91</div>
+                </div>
+                <div class="kpi-card" style="--accent: var(--positive)">
+                    <div class="kpi-label" id="google-kpi2-label" contenteditable="true">Valor de Conversão</div>
+                    <div class="kpi-value" id="google-kpi2-val" contenteditable="true">R$ 38.675,87</div>
+                </div>
+                <div class="kpi-card" style="--accent: var(--positive)">
+                    <div class="kpi-label" id="google-kpi3-label" contenteditable="true">ROAS</div>
+                    <div class="kpi-value badge-positive" style="display: inline-block; font-size: 1.75rem; border: none; background: transparent; padding: 0;" id="google-kpi3-val" contenteditable="true">8,14</div>
+                </div>
+                <div class="kpi-card" style="--accent: var(--google-color)">
+                    <div class="kpi-label" id="google-kpi4-label" contenteditable="true">Conversões (Vendas)</div>
+                    <div class="kpi-value" id="google-kpi4-val" contenteditable="true">214</div>
+                </div>
+                <div class="kpi-card" style="--accent: var(--google-color)">
+                    <div class="kpi-label" id="google-kpi5-label" contenteditable="true">Produtos no Carrinho</div>
+                    <div class="kpi-value" id="google-kpi5-val" contenteditable="true">172</div>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-header">
+                    <div class="card-title" id="google-tbl-title" contenteditable="true">
+                        <div class="card-title-icon" style="background: var(--google-color)"></div>
+                        Tabela de Campanhas - Google Ads
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome da Campanha</th>
+                                <th>Tipo</th>
+                                <th>Conversões</th>
+                                <th>Cliques</th>
+                                <th>Impressões</th>
+                                <th>CTR</th>
+                                <th>ROAS</th>
+                                <th>CPC Médio</th>
+                                <th>Investimento</th>
+                                <th>Faturamento (Conversão)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Performance Max Group -->
+                            <tr style="background: rgba(255, 255, 255, 0.02);">
+                                <td class="campaign-name" style="font-weight: bold;">[MM] [PURCHASE] [P-MAX] [DNF-10]</td>
+                                <td>Performance Max</td>
+                                <td>15,74</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="badge-positive">3,67</span></td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>R$ 2.417,69</td>
+                            </tr>
+                            <tr style="background: rgba(255, 255, 255, 0.02);">
+                                <td class="campaign-name">[MM]PMax - Todos os Produtos</td>
+                                <td>Performance Max</td>
+                                <td>140,67</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td><span class="badge-positive">4,03</span></td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>R$ 15.569,60</td>
+                            </tr>
+                            <tr style="background: rgba(255, 255, 255, 0.02);">
+                                <td class="campaign-name">[MM] Pmax - selecionados</td>
+                                <td>Performance Max</td>
+                                <td>8,22</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>R$ 2.071,50</td>
+                            </tr>
+                            <tr style="background: rgba(255, 255, 255, 0.02);">
+                                <td class="campaign-name">21.04.25 [MM] [P.MAX] [RMKT - VIEWSITE]</td>
+                                <td>Performance Max</td>
+                                <td>4,29</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>R$ 585,91</td>
+                            </tr>
+                            <tr style="border-bottom: 2px solid rgba(255,255,255,0.1); background: rgba(0, 240, 255, 0.02);">
+                                <td class="campaign-name" style="font-style: italic; padding-left: 1.5rem;">Subtotal Performance Max</td>
+                                <td>P-Max Geral</td>
+                                <td>168,93</td>
+                                <td>3.355</td>
+                                <td>173.363</td>
+                                <td>1,94%</td>
+                                <td><span class="badge-positive">5,23</span></td>
+                                <td>R$ 1,18</td>
+                                <td>R$ 3.945,96</td>
+                                <td>R$ 20.644,69</td>
+                            </tr>
+                            
+                            <!-- Search Group -->
+                            <tr>
+                                <td class="campaign-name" style="font-weight: bold;">[MM] Institucional | Search</td>
+                                <td>Pesquisa</td>
+                                <td>36,17</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>R$ 15.041,14</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] PSQ - Dinamico</td>
+                                <td>Pesquisa</td>
+                                <td>9,67</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>R$ 2.990,03</td>
+                            </tr>
+                            <tr style="border-bottom: 2px solid rgba(255,255,255,0.1); background: rgba(0, 230, 118, 0.02);">
+                                <td class="campaign-name" style="font-style: italic; padding-left: 1.5rem;">Subtotal Pesquisa</td>
+                                <td>Pesquisa Geral</td>
+                                <td>45,84</td>
+                                <td>1.018</td>
+                                <td>8.990</td>
+                                <td>11,32%</td>
+                                <td><span class="badge-positive" style="background: rgba(0, 230, 118, 0.18);">22,37</span></td>
+                                <td>R$ 0,79</td>
+                                <td>R$ 805,95</td>
+                                <td>R$ 18.031,18</td>
+                            </tr>
+                            
+                            <!-- Total Geral Google -->
+                            <tr style="font-weight: bold; background: rgba(255, 255, 255, 0.05); color: #fff;">
+                                <td>GOOGLE ADS TOTAL</td>
+                                <td>Conta Geral</td>
+                                <td>214</td>
+                                <td>4.373</td>
+                                <td>182.353</td>
+                                <td>2,40%</td>
+                                <td><span class="badge-positive">8,14</span></td>
+                                <td>R$ 1,09</td>
+                                <td>R$ 4.751,91</td>
+                                <td>R$ 38.675,87</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TIKTOK ADS SECTION -->
+        <section id="tiktok-ads" class="section-block">
+            <div class="dash-header">
+                <div>
+                    <h2 id="tiktok-main-h2" contenteditable="true">TikTok Ads</h2>
+                    <p id="tiktok-main-p" contenteditable="true">Desempenho da plataforma TikTok Ads Geral no mês de Maio 2026</p>
+                </div>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card" style="--accent: var(--tiktok-color)">
+                    <div class="kpi-label" id="tiktok-kpi1-label" contenteditable="true">Valor Investido</div>
+                    <div class="kpi-value" id="tiktok-kpi1-val" contenteditable="true">R$ 826,41</div>
+                </div>
+                <div class="kpi-card" style="--accent: var(--positive)">
+                    <div class="kpi-label" id="tiktok-kpi2-label" contenteditable="true">Valor de Conversão</div>
+                    <div class="kpi-value" id="tiktok-kpi2-val" contenteditable="true">R$ 759,22</div>
+                </div>
+                <div class="kpi-card" style="--accent: var(--warning)">
+                    <div class="kpi-label" id="tiktok-kpi3-label" contenteditable="true">ROAS</div>
+                    <div class="kpi-value badge-warning" style="display: inline-block; font-size: 1.75rem; border: none; background: transparent; padding: 0;" id="tiktok-kpi3-val" contenteditable="true">1,11</div>
+                </div>
+                <div class="kpi-card" style="--accent: var(--tiktok-color)">
+                    <div class="kpi-label" id="tiktok-kpi4-label" contenteditable="true">Conversões (Vendas)</div>
+                    <div class="kpi-value" id="tiktok-kpi4-val" contenteditable="true">3</div>
+                </div>
+                <div class="kpi-card" style="--accent: var(--tiktok-color)">
+                    <div class="kpi-label" id="tiktok-kpi5-label" contenteditable="true">Cliques no Link</div>
+                    <div class="kpi-value" id="tiktok-kpi5-val" contenteditable="true">16.269</div>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-header">
+                    <div class="card-title" id="tiktok-tbl-title" contenteditable="true">
+                        <div class="card-title-icon" style="background: var(--tiktok-color)"></div>
+                        Tabela de Campanhas - TikTok Ads
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome da Campanha</th>
+                                <th>Status</th>
+                                <th>Vendas (Site)</th>
+                                <th>Cliques</th>
+                                <th>Impressões</th>
+                                <th>CTR</th>
+                                <th>ROAS</th>
+                                <th>Faturamento (Conversão)</th>
+                                <th>Investimento</th>
+                                <th>Adições ao Carrinho</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="campaign-name">[MM] [PURCHASE] [MIX DE PRODUTOS]</td>
+                                <td><span class="badge-positive" style="background: rgba(0, 230, 118, 0.1); border: none;">Ativa</span></td>
+                                <td>3</td>
+                                <td>13.866</td>
+                                <td>32.412</td>
+                                <td>42,78%</td>
+                                <td><span class="badge-positive">1,11</span></td>
+                                <td>R$ 759,22</td>
+                                <td>R$ 681,45</td>
+                                <td>7</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [TRÁFEGO SITE]</td>
+                                <td><span class="badge-positive" style="background: rgba(0, 230, 118, 0.1); border: none;">Ativa</span></td>
+                                <td>0</td>
+                                <td>2.379</td>
+                                <td>6.254</td>
+                                <td>38,04%</td>
+                                <td><span class="badge-warning">0,00</span></td>
+                                <td>R$ 0,00</td>
+                                <td>R$ 80,05</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [MANUAL] [PURCHASE] [COMBO PEPTÍDEO]</td>
+                                <td><span class="badge-warning" style="background: rgba(255, 179, 0, 0.1); border: none;">Pausada</span></td>
+                                <td>0</td>
+                                <td>19</td>
+                                <td>1.198</td>
+                                <td>1,59%</td>
+                                <td><span class="badge-warning">0,00</span></td>
+                                <td>R$ 0,00</td>
+                                <td>R$ 63,56</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [MANUAL] [PURCHASE] [DNF-10]</td>
+                                <td><span class="badge-warning" style="background: rgba(255, 179, 0, 0.1); border: none;">Pausada</span></td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>10</td>
+                                <td>0,00%</td>
+                                <td><span class="badge-warning">0,00</span></td>
+                                <td>R$ 0,00</td>
+                                <td>R$ 0,98</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [SMART+] [COMBO PEPTÍDEO] [TESTE]</td>
+                                <td><span class="badge-warning" style="background: rgba(255, 179, 0, 0.1); border: none;">Pausada</span></td>
+                                <td>0</td>
+                                <td>4</td>
+                                <td>22</td>
+                                <td>18,18%</td>
+                                <td><span class="badge-warning">0,00</span></td>
+                                <td>R$ 0,00</td>
+                                <td>R$ 0,32</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [MANUAL] [PURCHASE] [PEPTÍDEO DA BELEZA]</td>
+                                <td><span class="badge-positive" style="background: rgba(0, 230, 118, 0.1); border: none;">Ativa</span></td>
+                                <td>0</td>
+                                <td>1</td>
+                                <td>9</td>
+                                <td>11,11%</td>
+                                <td><span class="badge-warning">0,00</span></td>
+                                <td>R$ 0,00</td>
+                                <td>R$ 0,05</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [SMART+] [PURCHASE] [RETINOL INTENSE]</td>
+                                <td><span class="badge-warning" style="background: rgba(255, 179, 0, 0.1); border: none;">Pausada</span></td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0,00%</td>
+                                <td><span class="badge-warning">0,00</span></td>
+                                <td>R$ 0,00</td>
+                                <td>R$ 0,00</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [PURCHASE] [NANO BTX]</td>
+                                <td><span class="badge-warning" style="background: rgba(255, 179, 0, 0.1); border: none;">Pausada</span></td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0,00%</td>
+                                <td><span class="badge-warning">0,00</span></td>
+                                <td>R$ 0,00</td>
+                                <td>R$ 0,00</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] [SMART+] [COMBO PEPTÍDEO]</td>
+                                <td><span class="badge-warning" style="background: rgba(255, 179, 0, 0.1); border: none;">Pausada</span></td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>1</td>
+                                <td>0,00%</td>
+                                <td><span class="badge-warning">0,00</span></td>
+                                <td>R$ 0,00</td>
+                                <td>R$ 0,00</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">Vendas20260429174733</td>
+                                <td><span class="badge-warning" style="background: rgba(255, 179, 0, 0.1); border: none;">Pausada</span></td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>2</td>
+                                <td>0,00%</td>
+                                <td><span class="badge-warning">0,00</span></td>
+                                <td>R$ 0,00</td>
+                                <td>R$ 0,00</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name">[MM] TRÁFEGO SITE TESTE</td>
+                                <td><span class="badge-warning" style="background: rgba(255, 179, 0, 0.1); border: none;">Pausada</span></td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0,00%</td>
+                                <td><span class="badge-warning">0,00</span></td>
+                                <td>R$ 0,00</td>
+                                <td>R$ 0,00</td>
+                                <td>0</td>
+                            </tr>
+                            <tr style="font-weight: bold; background: rgba(255, 255, 255, 0.05); color: #fff;">
+                                <td>TIKTOK ADS TOTAL</td>
+                                <td>Conta Geral</td>
+                                <td>3</td>
+                                <td>16.269</td>
+                                <td>39.908</td>
+                                <td>40,77%</td>
+                                <td><span class="badge-warning">1,11</span></td>
+                                <td>R$ 759,22</td>
+                                <td>R$ 826,41</td>
+                                <td>7</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONSOLIDATED BY PLATFORM -->
+        <section id="consolidado-plataformas" class="section-block">
+            <div class="dash-header">
+                <div>
+                    <h2 id="consolidado-p-h2" contenteditable="true">Resumo por Rede/Plataforma</h2>
+                    <p id="consolidado-p-p" contenteditable="true">Comparação detalhada de performance entre Meta Ads, Google Ads e TikTok Ads</p>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-header">
+                    <div class="card-title" id="consolidado-p-tbl-title" contenteditable="true">
+                        <div class="card-title-icon"></div>
+                        Tabela Comparativa de Canais
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Plataforma</th>
+                                <th>Investimento</th>
+                                <th>Faturamento (Conversão)</th>
+                                <th>ROAS</th>
+                                <th>Vendas (Site)</th>
+                                <th>Mensagens</th>
+                                <th>Cliques</th>
+                                <th>Impressões</th>
+                                <th>CTR</th>
+                                <th>CPC Médio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="campaign-name" style="color: var(--meta-color)">Meta Ads (3 Contas)</td>
+                                <td>R$ 39.426,08</td>
+                                <td>R$ 119.084,43</td>
+                                <td><span class="badge-positive">3,02</span></td>
+                                <td>347</td>
+                                <td>2.129</td>
+                                <td>58.725</td>
+                                <td>1.729.497</td>
+                                <td>3,40%</td>
+                                <td>R$ 0,67</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name" style="color: var(--google-color)">Google Ads</td>
+                                <td>R$ 4.751,91</td>
+                                <td>R$ 38.675,87</td>
+                                <td><span class="badge-positive" style="background: rgba(0, 230, 118, 0.18);">8,14</span></td>
+                                <td>214</td>
+                                <td>0</td>
+                                <td>4.373</td>
+                                <td>182.353</td>
+                                <td>2,40%</td>
+                                <td>R$ 1,09</td>
+                            </tr>
+                            <tr>
+                                <td class="campaign-name" style="color: var(--tiktok-color)">TikTok Ads</td>
+                                <td>R$ 826,41</td>
+                                <td>R$ 759,22</td>
+                                <td><span class="badge-warning">1,11</span></td>
+                                <td>3</td>
+                                <td>0</td>
+                                <td>16.269</td>
+                                <td>39.908</td>
+                                <td>40,77%</td>
+                                <td>R$ 0,05</td>
+                            </tr>
+                            <tr style="font-weight: bold; background: rgba(255, 255, 255, 0.05); color: #fff;">
+                                <td style="color: #fff;">TOTAL GERAL</td>
+                                <td>R$ 45.004,40</td>
+                                <td>R$ 158.519,52</td>
+                                <td><span class="badge-positive" style="border-color: var(--accent)">3,52</span></td>
+                                <td>564</td>
+                                <td>2.129</td>
+                                <td>79.367</td>
+                                <td>1.951.758</td>
+                                <td>3,55%</td>
+                                <td>R$ 0,57</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- GLOBAL CONSOLIDATED SECTION -->
+        <section id="consolidado-geral" class="section-block">
+            <div class="dash-header">
+                <div>
+                    <h2 id="consolidado-g-h2" contenteditable="true">Resultados Globais</h2>
+                    <p id="consolidado-g-p" contenteditable="true">Performance consolidada de todas as plataformas de anúncios no mês de Maio 2026</p>
+                </div>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card" style="--accent: var(--accent)">
+                    <div class="kpi-label" id="consolidado-g-kpi1-label" contenteditable="true">Investimento Total</div>
+                    <div class="kpi-value" id="consolidado-g-kpi1-val" contenteditable="true">R$ 45.004,40</div>
+                    <div class="kpi-subtext" id="consolidado-g-kpi1-sub" contenteditable="true">Valor investido no tráfego</div>
+                </div>
+                <div class="kpi-card" style="--accent: var(--positive)">
+                    <div class="kpi-label" id="consolidado-g-kpi2-label" contenteditable="true">Faturamento Total</div>
+                    <div class="kpi-value" id="consolidado-g-kpi2-val" contenteditable="true">R$ 158.519,52</div>
+                    <div class="kpi-subtext" id="consolidado-g-kpi2-sub" contenteditable="true">Valor total retornado</div>
+                </div>
+                <div class="kpi-card" style="--accent: var(--positive)">
+                    <div class="kpi-label" id="consolidado-g-kpi3-label" contenteditable="true">ROAS Geral</div>
+                    <div class="kpi-value badge-positive" style="display: inline-block; font-size: 1.75rem; border: none; background: transparent; padding: 0;" id="consolidado-g-kpi3-val" contenteditable="true">3,52</div>
+                    <div class="kpi-subtext" id="consolidado-g-kpi3-sub" contenteditable="true">Retorno médio sobre anúncio</div>
+                </div>
+                <div class="kpi-card" style="--accent: var(--accent)">
+                    <div class="kpi-label" id="consolidado-g-kpi4-label" contenteditable="true">Vendas (Site)</div>
+                    <div class="kpi-value" id="consolidado-g-kpi4-val" contenteditable="true">564</div>
+                    <div class="kpi-subtext" id="consolidado-g-kpi4-sub" contenteditable="true">Total de conversões registradas</div>
+                </div>
+                <div class="kpi-card" style="--accent: var(--accent)">
+                    <div class="kpi-label" id="consolidado-g-kpi5-label" contenteditable="true">Mensagens</div>
+                    <div class="kpi-value" id="consolidado-g-kpi5-val" contenteditable="true">2.129</div>
+                    <div class="kpi-subtext" id="consolidado-g-kpi5-sub" contenteditable="true">Leads/contatos gerados</div>
+                </div>
+            </div>
+
+            <!-- Conversion Funnel Card -->
+            <div class="glass-card">
+                <div class="card-header">
+                    <div class="card-title" id="funnel-card-title" contenteditable="true">
+                        <div class="card-title-icon" style="background: var(--accent)"></div>
+                        Funil de Conversão Global
+                    </div>
+                </div>
+                
+                <div class="funnel-container">
+                    <div class="funnel-stage" style="--funnel-color: #0088cc;">
+                        <div class="funnel-label" id="funnel-lbl1" contenteditable="true">Impressões</div>
+                        <div class="funnel-bar" style="width: 100%;">
+                            <div class="funnel-value" id="funnel-val1" contenteditable="true">1.951.758</div>
+                        </div>
+                    </div>
+                    <div class="funnel-stage" style="--funnel-color: #00d2ff; --accent-rgb: 0, 210, 255;">
+                        <div class="funnel-label" id="funnel-lbl2" contenteditable="true">Cliques (CTR: 3,55%)</div>
+                        <div class="funnel-bar" style="width: 65%;">
+                            <div class="funnel-value" id="funnel-val2" contenteditable="true">79.367</div>
+                        </div>
+                    </div>
+                    <div class="funnel-stage" style="--funnel-color: #ffd600; --accent-rgb: 255, 214, 0;">
+                        <div class="funnel-label" id="funnel-lbl3" contenteditable="true">Visitas & Leads (Mensagens)</div>
+                        <div class="funnel-bar" style="width: 45%;">
+                            <div class="funnel-value" id="funnel-val3" contenteditable="true">33.555 (Visitas + Leads)</div>
+                        </div>
+                    </div>
+                    <div class="funnel-stage" style="--funnel-color: #00e676; --accent-rgb: 0, 230, 118;">
+                        <div class="funnel-label" id="funnel-lbl4" contenteditable="true">Vendas Efetuadas</div>
+                        <div class="funnel-bar" style="width: 25%;">
+                            <div class="funnel-value" id="funnel-val4" contenteditable="true">564</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEXT STEPS SECTION -->
+        <section id="next-steps" class="section-block">
+            <div class="dash-header">
+                <div>
+                    <h2 id="next-main-h2" contenteditable="true">Próximos Passos</h2>
+                    <p id="next-main-p" contenteditable="true">Próximas ações e estratégias de mídia planejadas para o mês de Junho</p>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-header">
+                    <div class="card-title" id="next-tbl-title" contenteditable="true">
+                        <div class="card-title-icon" style="background: var(--accent)"></div>
+                        Planejamento Estratégico & Insights
+                    </div>
+                </div>
+                <div style="padding: 1rem 0;">
+                    <p style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 1.5rem; outline: none;" id="next-summary-intro" contenteditable="true">
+                        Nas campanhas de Maio geramos um total global de <strong>564 conversões (vendas)</strong> e <strong>2.129 mensagens (leads)</strong>, com faturamento total de <strong>R$ 158.519,52</strong> sobre um investimento de <strong>R$ 45.004,40</strong>, resultando em um <strong>ROAS Geral de 3,52</strong>.
+                    </p>
+                    <div class="strategy-container">
+                        <div class="strategy-block" style="background: rgba(0, 240, 255, 0.03); border-color: rgba(0, 240, 255, 0.15);">
+                            <h4 id="next-block1-h4" contenteditable="true">Otimização de Custos e Públicos (Meta Ads)</h4>
+                            <p style="font-size: 1rem;" id="next-block1-p" contenteditable="true">Identificamos campanhas com excelente retorno (como <strong>[MM] [BLOQUEADOR DE CARBO] [CONVERSÃO SITE] 1</strong> com ROAS de 5,60 e <strong>[MM] [PURCHASE] [DNF-10] 4</strong> com ROAS de 5,08). Focaremos o orçamento de Junho escalando estas verticais, enquanto reduziremos ou pausaremos campanhas com custo/lead acima da média aceitável.</p>
+                        </div>
+                        <div class="strategy-block" style="background: rgba(0, 230, 118, 0.03); border-color: rgba(0, 230, 118, 0.15);">
+                            <h4 id="next-block2-h4" contenteditable="true">Expansão de Canais de Alta Conversão (Google Ads)</h4>
+                            <p style="font-size: 1rem;" id="next-block2-p" contenteditable="true">O Google Ads demonstrou uma performance excelente neste mês de Maio com um <strong>ROAS de 8,14</strong>. Há uma margem clara para aumentar o orçamento de maneira controlada nas campanhas de P-Max e institucional de forma a impulsionar o faturamento global da Biotipo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FINALIZATION SECTION -->
+        <section id="finalizacao" class="section-block">
+            <div class="final-presentation-block">
+                <h2 class="thank-you-title" id="thanks-main-title" contenteditable="true">Muito obrigado pela parceria!</h2>
+
+                <div class="final-branding-card" style="background: transparent; border: none; padding: 0; margin-top: 0;">
+                    <!-- Closing Signature Block -->
+                    <div class="closing-footer-layout">
+                        <img src="logo-quantika.png" style="height: 35px; object-fit: contain; filter: drop-shadow(0 0 5px rgba(0,240,255,0.3));" alt="QUÂNTIKA Logo">
+                        <div class="footer-logo-mike" style="margin-left: -0.5rem;" id="thanks-logo-text" contenteditable="true">QUÂNTIKA</div>
+                        <div class="closing-divider"></div>
+                        <div style="text-align: left; font-size: 0.8rem; color: var(--text-muted);">
+                            <strong style="color: #fff; display: block; margin-bottom: 0.25rem;" id="thanks-biotipo-text" contenteditable="true">BIOTIPO</strong>
+                            <span id="thanks-sub-date" contenteditable="true">Gestão de Mídia & Analytics | Maio 2026</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    // LocalStorage persistence for contenteditable elements
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+            const id = el.id;
+            if (!id) return;
+            
+            // Restore from localStorage
+            const saved = localStorage.getItem("editable_" + id);
+            if (saved !== null) {
+                el.innerHTML = saved;
+            }
+            
+            // Save to localStorage on input change
+            el.addEventListener("input", () => {
+                localStorage.setItem("editable_" + id, el.innerHTML);
+            });
+        });
+    });
+
+    // Fullscreen presentation API trigger
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                alert(`Erro ao tentar ativar tela cheia: ${err.message}`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    }
+
+    // Navigation routing logic
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            if (e.target.hasAttribute('contenteditable') || e.target.closest('[contenteditable="true"]')) return;
+            
+            e.preventDefault();
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            this.classList.add('active');
+            
+            const target = this.getAttribute('data-target');
+            document.querySelectorAll('.section-block').forEach(section => {
+                section.classList.remove('active');
+                if (section.id === target) {
+                    section.classList.add('active');
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    });
+
+    // Drag and Drop ordering for navigation links
+    let dragSourceEl = null;
+
+    function handleDragStart(e) {
+        dragSourceEl = e.currentTarget;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', e.currentTarget.innerHTML);
+        e.dataTransfer.setData('text/plain', e.currentTarget.getAttribute('data-target'));
+        e.currentTarget.style.opacity = '0.4';
+    }
+
+    // Handle drag events
+    function handleDragOver(e) {
+        if (e.preventDefault) {
+            e.preventDefault();
+        }
+        e.currentTarget.classList.add('drag-over');
+        e.dataTransfer.dropEffect = 'move';
+        return false;
+    }
+
+    function handleDragLeave(e) {
+        e.currentTarget.classList.remove('drag-over');
+    }
+
+    function handleDrop(e) {
+        if (e.stopPropagation) {
+            e.stopPropagation();
+        }
+        
+        if (dragSourceEl !== e.currentTarget) {
+            const sourceHTML = dragSourceEl.innerHTML;
+            const sourceTarget = dragSourceEl.getAttribute('data-target');
+            
+            dragSourceEl.innerHTML = e.currentTarget.innerHTML;
+            dragSourceEl.setAttribute('data-target', e.currentTarget.getAttribute('data-target'));
+            
+            e.currentTarget.innerHTML = sourceHTML;
+            e.currentTarget.setAttribute('data-target', sourceTarget);
+            
+            const wasActive = e.currentTarget.classList.contains('active');
+            const sourceActive = dragSourceEl.classList.contains('active');
+            
+            if (wasActive) {
+                e.currentTarget.classList.remove('active');
+                dragSourceEl.classList.add('active');
+            } else if (sourceActive) {
+                dragSourceEl.classList.remove('active');
+                e.currentTarget.classList.add('active');
+            }
+        }
+        e.currentTarget.classList.remove('drag-over');
+        return false;
+    }
+
+    function handleDragEnd(e) {
+        e.currentTarget.style.opacity = '1';
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('drag-over');
+        });
+    }
+</script>
+
+</body>
+</html>
