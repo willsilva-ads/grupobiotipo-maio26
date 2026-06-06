@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biotipo - Relatório de Performance - Maio 2026</title>
+    <title>Biotipo - Relatório de Performance - Maio 2026 (V3)</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -211,12 +211,8 @@
             width: 100%;
             border-radius: 10px;
             transition: all 0.3s ease;
-            cursor: grab;
+            cursor: pointer;
             border: 1px solid transparent;
-        }
-        
-        .nav-item:active {
-            cursor: grabbing;
         }
 
         .nav-item a {
@@ -237,11 +233,6 @@
             background: rgba(0, 240, 255, 0.08);
             border-left: 3px solid var(--accent);
             padding-left: calc(0.85rem - 3px);
-        }
-
-        .nav-item.drag-over {
-            border: 1px dashed var(--accent);
-            background: rgba(0, 240, 255, 0.04);
         }
 
         .footer-branding {
@@ -525,6 +516,36 @@
             margin-top: 1.5rem;
             border-radius: 12px;
             border: 1px solid var(--border-card);
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+        }
+
+        /* Visual indicator for swiping tables on mobile */
+        .table-responsive::after {
+            content: "Deslize para ver mais ↔";
+            display: none;
+            position: absolute;
+            bottom: 5px;
+            right: 10px;
+            background: rgba(0, 240, 255, 0.85);
+            color: #050814;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.7rem;
+            font-weight: bold;
+            border-radius: 4px;
+            pointer-events: none;
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        @media (max-width: 900px) {
+            .table-responsive::after {
+                display: block;
+            }
         }
 
         table {
@@ -655,83 +676,92 @@
             background-color: rgba(255,255,255,0.15);
         }
 
-        /* Mobile Header and Drawer Styling */
-        .mobile-header {
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
-            background-color: #070b16;
-            border-bottom: 1px solid var(--border-card);
-            padding: 0 1.5rem;
-            z-index: 150;
-        }
-
-        .menu-toggle {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.5rem;
-            cursor: pointer;
-            outline: none;
-            padding: 0.5rem;
-        }
-
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 99;
-        }
-
-        /* Mobile Responsive media query */
+        /* Mobile Responsive media query (Horizontal Fixed Tab Menu) */
         @media (max-width: 900px) {
             .app-container {
                 grid-template-columns: 1fr;
             }
 
+            /* Sticky Header Sidebar on Mobile */
             .sidebar {
                 position: fixed;
                 top: 0;
-                left: -290px;
-                width: 290px;
-                height: 100vh;
-                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                z-index: 100;
-                box-shadow: 5px 0 25px rgba(0, 0, 0, 0.6);
-            }
-
-            .sidebar.active {
                 left: 0;
-            }
-
-            .sidebar-overlay.active {
-                display: block;
-            }
-
-            .mobile-header {
+                right: 0;
+                width: 100%;
+                height: auto;
+                min-height: auto;
+                padding: 1rem 1rem 0.5rem 1rem;
+                background-color: #070b16;
+                border-right: none;
+                border-bottom: 1px solid var(--border-card);
                 display: flex;
+                flex-direction: column;
+                z-index: 150;
+            }
+
+            .logo-area {
+                margin-bottom: 0.75rem;
+                justify-content: center;
+            }
+
+            .sidebar nav {
+                width: 100%;
+            }
+
+            /* Horizontal Menu Scroll */
+            .nav-list {
+                display: flex;
+                flex-direction: row;
+                gap: 0.5rem;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none; /* Hide standard scrollbar */
+            }
+
+            .nav-list::-webkit-scrollbar {
+                display: none; /* Hide webkit scrollbar */
+            }
+
+            .nav-item {
+                flex: 0 0 auto;
+                width: auto;
+                border-radius: 20px;
+                border: 1px solid var(--border-card);
+            }
+
+            .nav-item a {
+                padding: 0.75rem 1.15rem;
+                font-size: 0.9rem;
+            }
+
+            .nav-item.active a, .nav-item a:hover {
+                border-left: none;
+                border-bottom: 2px solid var(--accent);
+                padding-left: 1.15rem;
+                padding-bottom: calc(0.75rem - 2px);
+                background: rgba(0, 240, 255, 0.12);
+            }
+
+            /* Hide elements not needed on mobile layout */
+            .fullscreen-btn, .footer-branding {
+                display: none !important;
             }
 
             .main-content {
-                padding: 1.5rem;
-                padding-top: 5.5rem; /* Space for the fixed header */
+                padding: 1.2rem;
+                padding-top: 9.5rem; /* Large offset for top fixed header */
             }
 
             .cover-content {
                 grid-template-columns: 1fr;
-                gap: 2rem;
+                gap: 1.5rem;
                 text-align: center;
             }
 
             .cover-left h1 {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
             }
 
             .cover-badge {
@@ -743,14 +773,14 @@
             }
 
             .cover-art {
-                width: 200px;
-                height: 200px;
+                width: 180px;
+                height: 180px;
                 margin: 0 auto;
             }
 
             .strategy-container {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
+                gap: 1rem;
             }
 
             .kpi-grid {
@@ -796,33 +826,24 @@
 </head>
 <body>
 
-    <!-- Mobile Header -->
-    <div class="mobile-header">
-        <button class="menu-toggle" id="menuToggleBtn">☰</button>
-        <div class="logo-text">Biotipo</div>
-    </div>
-    
-    <!-- Mobile Drawer Overlay -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
 <div class="app-container">
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
         <div>
             <div class="logo-area">
-                <div class="logo-text" id="sidebar-logo-title" contenteditable="true">Biotipo</div>
+                <div class="logo-text" id="sidebar-logo-title">Biotipo</div>
             </div>
             
             <nav>
                 <ul class="nav-list" id="sidebarNavList">
-                    <li class="nav-item active" data-target="cover" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragend="handleDragEnd(event)"><a href="#cover"><span id="nav-cover-text" contenteditable="true">Capa do Relatório</span></a></li>
-                    <li class="nav-item" data-target="meta-ads" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragend="handleDragEnd(event)"><a href="#meta-ads"><span id="nav-meta-text" contenteditable="true">Meta Ads</span></a></li>
-                    <li class="nav-item" data-target="google-ads" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragend="handleDragEnd(event)"><a href="#google-ads"><span id="nav-google-text" contenteditable="true">Google Ads</span></a></li>
-                    <li class="nav-item" data-target="tiktok-ads" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragend="handleDragEnd(event)"><a href="#tiktok-ads"><span id="nav-tiktok-text" contenteditable="true">TikTok Ads</span></a></li>
-                    <li class="nav-item" data-target="consolidado-plataformas" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragend="handleDragEnd(event)"><a href="#consolidado-plataformas"><span id="nav-resumo-text" contenteditable="true">Resumo por Rede</span></a></li>
-                    <li class="nav-item" data-target="consolidado-geral" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragend="handleDragEnd(event)"><a href="#consolidado-geral"><span id="nav-globais-text" contenteditable="true">Resultados Globais</span></a></li>
-                    <li class="nav-item" data-target="next-steps" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragend="handleDragEnd(event)"><a href="#next-steps"><span id="nav-passos-text" contenteditable="true">Próximos Passos</span></a></li>
-                    <li class="nav-item" data-target="finalizacao" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragend="handleDragEnd(event)"><a href="#finalizacao"><span id="nav-thanks-text" contenteditable="true">Agradecimento</span></a></li>
+                    <li class="nav-item active" data-target="cover"><a href="#cover"><span id="nav-cover-text">Capa</span></a></li>
+                    <li class="nav-item" data-target="meta-ads"><a href="#meta-ads"><span id="nav-meta-text">Meta Ads</span></a></li>
+                    <li class="nav-item" data-target="google-ads"><a href="#google-ads"><span id="nav-google-text">Google Ads</span></a></li>
+                    <li class="nav-item" data-target="tiktok-ads"><a href="#tiktok-ads"><span id="nav-tiktok-text">TikTok Ads</span></a></li>
+                    <li class="nav-item" data-target="consolidado-plataformas"><a href="#consolidado-plataformas"><span id="nav-resumo-text">Resumo por Rede</span></a></li>
+                    <li class="nav-item" data-target="consolidado-geral"><a href="#consolidado-geral"><span id="nav-globais-text">Resultados Globais</span></a></li>
+                    <li class="nav-item" data-target="next-steps"><a href="#next-steps"><span id="nav-passos-text">Próximos Passos</span></a></li>
+                    <li class="nav-item" data-target="finalizacao"><a href="#finalizacao"><span id="nav-thanks-text">Agradecimento</span></a></li>
                 </ul>
             </nav>
         </div>
@@ -834,8 +855,8 @@
             </button>
             
             <div class="footer-branding">
-                <strong id="footer-brand-date" contenteditable="true">Maio 2026</strong>
-                <span id="footer-brand-label" contenteditable="true">Performance Dashboard</span>
+                <strong id="footer-brand-date">Maio 2026</strong>
+                <span id="footer-brand-label">Performance Dashboard</span>
             </div>
         </div>
     </aside>
@@ -845,23 +866,23 @@
         <!-- COVER SECTION -->
         <section id="cover" class="section-block active">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
-                <div class="cover-badge" id="cover-badge-text" contenteditable="true">🏆 Dashboard de Performance</div>
+                <div class="cover-badge" id="cover-badge-text">🏆 Dashboard de Performance</div>
             </div>
             
             <div class="cover-content" style="margin-top: 4rem;">
                 <div class="cover-left">
-                    <h1 id="cover-main-h1" contenteditable="true">Relatório de Tráfego Pago</h1>
-                    <p style="font-size: 1.75rem; color: #fff; margin-bottom: 0.75rem; font-family: 'Outfit';" id="cover-brand-name" contenteditable="true">Biotipo</p>
-                    <p style="font-size: 1.15rem; color: var(--text-muted); font-weight: 300; margin-bottom: 4rem;" id="cover-description-p" contenteditable="true">Análise estratégica consolidada do tráfego pago, faturamento e geração de leads para as contas de Meta Ads, Google Ads e TikTok Ads durante o período de Maio de 2026.</p>
+                    <h1 id="cover-main-h1">Relatório de Tráfego Pago</h1>
+                    <p style="font-size: 1.75rem; color: #fff; margin-bottom: 0.75rem; font-family: 'Outfit';" id="cover-brand-name">Biotipo</p>
+                    <p style="font-size: 1.15rem; color: var(--text-muted); font-weight: 300; margin-bottom: 4rem;" id="cover-description-p">Análise estratégica consolidada do tráfego pago, faturamento e geração de leads para as contas de Meta Ads, Google Ads e TikTok Ads durante o período de Maio de 2026.</p>
                     
                     <!-- Cover Signature Block -->
                     <div class="closing-footer-layout" style="justify-content: flex-start; margin-top: 2rem;">
                         <img src="logo-quantika.png" style="height: 35px; object-fit: contain; filter: drop-shadow(0 0 5px rgba(0,240,255,0.3));" alt="QUÂNTIKA Logo">
-                        <div class="footer-logo-mike" style="margin-left: -0.5rem;" id="cover-quantika-sig" contenteditable="true">QUÂNTIKA</div>
+                        <div class="footer-logo-mike" style="margin-left: -0.5rem;" id="cover-quantika-sig">QUÂNTIKA</div>
                         <div class="closing-divider"></div>
                         <div style="text-align: left; font-size: 0.8rem; color: var(--text-muted);">
-                            <strong style="color: #fff; display: block; margin-bottom: 0.25rem;" id="cover-biotipo-sig" contenteditable="true">BIOTIPO</strong>
-                            <span id="cover-sub-sig" contenteditable="true">Gestão de Mídia & Analytics | Maio 2026</span>
+                            <strong style="color: #fff; display: block; margin-bottom: 0.25rem;" id="cover-biotipo-sig">BIOTIPO</strong>
+                            <span id="cover-sub-sig">Gestão de Mídia & Analytics | Maio 2026</span>
                         </div>
                     </div>
                 </div>
@@ -877,15 +898,15 @@
         <section id="meta-ads" class="section-block">
             <div class="dash-header">
                 <div>
-                    <h2 id="meta-main-h2" contenteditable="true">Meta Ads (Facebook & Instagram)</h2>
-                    <p id="meta-main-p" contenteditable="true">Detalhamento dos resultados divididos pelas 3 contas de anúncios</p>
+                    <h2 id="meta-main-h2">Meta Ads (Facebook & Instagram)</h2>
+                    <p id="meta-main-p">Detalhamento dos resultados divididos pelas 3 contas de anúncios</p>
                 </div>
             </div>
 
             <!-- CONTA 01 -->
             <div class="glass-card">
                 <div class="card-header">
-                    <div class="card-title" id="meta-c1-title" contenteditable="true">
+                    <div class="card-title" id="meta-c1-title">
                         <div class="card-title-icon" style="background: var(--meta-color)"></div>
                         Conta 01 - Biotipo (Site e Mensagens)
                     </div>
@@ -893,20 +914,20 @@
 
                 <div class="kpi-grid">
                     <div class="kpi-card" style="--accent: var(--meta-color)">
-                        <div class="kpi-label" id="meta-c1-kpi1-label" contenteditable="true">Investimento</div>
-                        <div class="kpi-value" id="meta-c1-kpi1-val" contenteditable="true">R$ 33.846,54</div>
+                        <div class="kpi-label" id="meta-c1-kpi1-label">Investimento</div>
+                        <div class="kpi-value" id="meta-c1-kpi1-val">R$ 33.846,54</div>
                     </div>
                     <div class="kpi-card" style="--accent: var(--positive)">
-                        <div class="kpi-label" id="meta-c1-kpi2-label" contenteditable="true">Valor de Conversão</div>
-                        <div class="kpi-value" id="meta-c1-kpi2-val" contenteditable="true">R$ 101.337,38</div>
+                        <div class="kpi-label" id="meta-c1-kpi2-label">Valor de Conversão</div>
+                        <div class="kpi-value" id="meta-c1-kpi2-val">R$ 101.337,38</div>
                     </div>
                     <div class="kpi-card" style="--accent: var(--positive)">
-                        <div class="kpi-label" id="meta-c1-kpi3-label" contenteditable="true">ROAS</div>
-                        <div class="kpi-value" id="meta-c1-kpi3-val" contenteditable="true">2,99</div>
+                        <div class="kpi-label" id="meta-c1-kpi3-label">ROAS</div>
+                        <div class="kpi-value" id="meta-c1-kpi3-val">2,99</div>
                     </div>
                     <div class="kpi-card" style="--accent: var(--meta-color)">
-                        <div class="kpi-label" id="meta-c1-kpi4-label" contenteditable="true">Vendas (Site)</div>
-                        <div class="kpi-value" id="meta-c1-kpi4-val" contenteditable="true">300</div>
+                        <div class="kpi-label" id="meta-c1-kpi4-label">Vendas (Site)</div>
+                        <div class="kpi-value" id="meta-c1-kpi4-val">300</div>
                     </div>
                 </div>
 
@@ -1148,7 +1169,7 @@
             <!-- CONTA 02 -->
             <div class="glass-card">
                 <div class="card-header">
-                    <div class="card-title" id="meta-c2-title" contenteditable="true">
+                    <div class="card-title" id="meta-c2-title">
                         <div class="card-title-icon" style="background: var(--meta-color)"></div>
                         Conta 02 - Grupo Biotipo v3 (Mensagens WhatsApp)
                     </div>
@@ -1156,20 +1177,20 @@
 
                 <div class="kpi-grid">
                     <div class="kpi-card" style="--accent: var(--meta-color)">
-                        <div class="kpi-label" id="meta-c2-kpi1-label" contenteditable="true">Mensagens Recebidas</div>
-                        <div class="kpi-value" id="meta-c2-kpi1-val" contenteditable="true">165</div>
+                        <div class="kpi-label" id="meta-c2-kpi1-label">Mensagens Recebidas</div>
+                        <div class="kpi-value" id="meta-c2-kpi1-val">165</div>
                     </div>
                     <div class="kpi-card" style="--accent: var(--meta-color)">
-                        <div class="kpi-label" id="meta-c2-kpi2-label" contenteditable="true">Custo Médio por Lead</div>
-                        <div class="kpi-value" id="meta-c2-kpi2-val" contenteditable="true">R$ 25,74</div>
+                        <div class="kpi-label" id="meta-c2-kpi2-label">Custo Médio por Lead</div>
+                        <div class="kpi-value" id="meta-c2-kpi2-val">R$ 25,74</div>
                     </div>
                     <div class="kpi-card" style="--accent: var(--meta-color)">
-                        <div class="kpi-label" id="meta-c2-kpi3-label" contenteditable="true">Cliques Totais</div>
-                        <div class="kpi-value" id="meta-c2-kpi3-val" contenteditable="true">1.751</div>
+                        <div class="kpi-label" id="meta-c2-kpi3-label">Cliques Totais</div>
+                        <div class="kpi-value" id="meta-c2-kpi3-val">1.751</div>
                     </div>
                     <div class="kpi-card" style="--accent: var(--meta-color)">
-                        <div class="kpi-label" id="meta-c2-kpi4-label" contenteditable="true">Impressões</div>
-                        <div class="kpi-value" id="meta-c2-kpi4-val" contenteditable="true">151.116</div>
+                        <div class="kpi-label" id="meta-c2-kpi4-label">Impressões</div>
+                        <div class="kpi-value" id="meta-c2-kpi4-val">151.116</div>
                     </div>
                 </div>
 
@@ -1228,7 +1249,7 @@
             <!-- CONTA 04 -->
             <div class="glass-card">
                 <div class="card-header">
-                    <div class="card-title" id="meta-c4-title" contenteditable="true">
+                    <div class="card-title" id="meta-c4-title">
                         <div class="card-title-icon" style="background: var(--meta-color)"></div>
                         Conta 04 - Biotipo Reserva 2 (Conversões & Contatos)
                     </div>
@@ -1236,20 +1257,20 @@
 
                 <div class="kpi-grid">
                     <div class="kpi-card" style="--accent: var(--meta-color)">
-                        <div class="kpi-label" id="meta-c4-kpi1-label" contenteditable="true">Investimento</div>
-                        <div class="kpi-value" id="meta-c4-kpi1-val" contenteditable="true">R$ 5.579,54</div>
+                        <div class="kpi-label" id="meta-c4-kpi1-label">Investimento</div>
+                        <div class="kpi-value" id="meta-c4-kpi1-val">R$ 5.579,54</div>
                     </div>
                     <div class="kpi-card" style="--accent: var(--positive)">
-                        <div class="kpi-label" id="meta-c4-kpi2-label" contenteditable="true">Valor de Conversão</div>
-                        <div class="kpi-value" id="meta-c4-kpi2-val" contenteditable="true">R$ 17.747,05</div>
+                        <div class="kpi-label" id="meta-c4-kpi2-label">Valor de Conversão</div>
+                        <div class="kpi-value" id="meta-c4-kpi2-val">R$ 17.747,05</div>
                     </div>
                     <div class="kpi-card" style="--accent: var(--positive)">
-                        <div class="kpi-label" id="meta-c4-kpi3-label" contenteditable="true">ROAS</div>
-                        <div class="kpi-value" id="meta-c4-kpi3-val" contenteditable="true">3,18</div>
+                        <div class="kpi-label" id="meta-c4-kpi3-label">ROAS</div>
+                        <div class="kpi-value" id="meta-c4-kpi3-val">3,18</div>
                     </div>
                     <div class="kpi-card" style="--accent: var(--meta-color)">
-                        <div class="kpi-label" id="meta-c4-kpi4-label" contenteditable="true">Mensagens</div>
-                        <div class="kpi-value" id="meta-c4-kpi4-val" contenteditable="true">1.822</div>
+                        <div class="kpi-label" id="meta-c4-kpi4-label">Mensagens</div>
+                        <div class="kpi-value" id="meta-c4-kpi4-val">1.822</div>
                     </div>
                 </div>
 
@@ -1328,37 +1349,37 @@
         <section id="google-ads" class="section-block">
             <div class="dash-header">
                 <div>
-                    <h2 id="google-main-h2" contenteditable="true">Google Ads</h2>
-                    <p id="google-main-p" contenteditable="true">Performance detalhada por campanhas e rede no mês de Maio 2026</p>
+                    <h2 id="google-main-h2">Google Ads</h2>
+                    <p id="google-main-p">Performance detalhada por campanhas e rede no mês de Maio 2026</p>
                 </div>
             </div>
 
             <div class="kpi-grid">
                 <div class="kpi-card" style="--accent: var(--google-color)">
-                    <div class="kpi-label" id="google-kpi1-label" contenteditable="true">Valor Investido</div>
-                    <div class="kpi-value" id="google-kpi1-val" contenteditable="true">R$ 4.751,91</div>
+                    <div class="kpi-label" id="google-kpi1-label">Valor Investido</div>
+                    <div class="kpi-value" id="google-kpi1-val">R$ 4.751,91</div>
                 </div>
                 <div class="kpi-card" style="--accent: var(--positive)">
-                    <div class="kpi-label" id="google-kpi2-label" contenteditable="true">Valor de Conversão</div>
-                    <div class="kpi-value" id="google-kpi2-val" contenteditable="true">R$ 38.675,87</div>
+                    <div class="kpi-label" id="google-kpi2-label">Valor de Conversão</div>
+                    <div class="kpi-value" id="google-kpi2-val">R$ 38.675,87</div>
                 </div>
                 <div class="kpi-card" style="--accent: var(--positive)">
-                    <div class="kpi-label" id="google-kpi3-label" contenteditable="true">ROAS</div>
-                    <div class="kpi-value badge-positive" style="display: inline-block; font-size: 1.75rem; border: none; background: transparent; padding: 0;" id="google-kpi3-val" contenteditable="true">8,14</div>
+                    <div class="kpi-label" id="google-kpi3-label">ROAS</div>
+                    <div class="kpi-value badge-positive" style="display: inline-block; font-size: 1.75rem; border: none; background: transparent; padding: 0;" id="google-kpi3-val">8,14</div>
                 </div>
                 <div class="kpi-card" style="--accent: var(--google-color)">
-                    <div class="kpi-label" id="google-kpi4-label" contenteditable="true">Conversões (Vendas)</div>
-                    <div class="kpi-value" id="google-kpi4-val" contenteditable="true">214</div>
+                    <div class="kpi-label" id="google-kpi4-label">Conversões (Vendas)</div>
+                    <div class="kpi-value" id="google-kpi4-val">214</div>
                 </div>
                 <div class="kpi-card" style="--accent: var(--google-color)">
-                    <div class="kpi-label" id="google-kpi5-label" contenteditable="true">Produtos no Carrinho</div>
-                    <div class="kpi-value" id="google-kpi5-val" contenteditable="true">172</div>
+                    <div class="kpi-label" id="google-kpi5-label">Produtos no Carrinho</div>
+                    <div class="kpi-value" id="google-kpi5-val">172</div>
                 </div>
             </div>
 
             <div class="glass-card">
                 <div class="card-header">
-                    <div class="card-title" id="google-tbl-title" contenteditable="true">
+                    <div class="card-title" id="google-tbl-title">
                         <div class="card-title-icon" style="background: var(--google-color)"></div>
                         Tabela de Campanhas - Google Ads
                     </div>
@@ -1504,37 +1525,37 @@
         <section id="tiktok-ads" class="section-block">
             <div class="dash-header">
                 <div>
-                    <h2 id="tiktok-main-h2" contenteditable="true">TikTok Ads</h2>
-                    <p id="tiktok-main-p" contenteditable="true">Desempenho da plataforma TikTok Ads Geral no mês de Maio 2026</p>
+                    <h2 id="tiktok-main-h2">TikTok Ads</h2>
+                    <p id="tiktok-main-p">Desempenho da plataforma TikTok Ads Geral no mês de Maio 2026</p>
                 </div>
             </div>
 
             <div class="kpi-grid">
                 <div class="kpi-card" style="--accent: var(--tiktok-color)">
-                    <div class="kpi-label" id="tiktok-kpi1-label" contenteditable="true">Valor Investido</div>
-                    <div class="kpi-value" id="tiktok-kpi1-val" contenteditable="true">R$ 826,41</div>
+                    <div class="kpi-label" id="tiktok-kpi1-label">Valor Investido</div>
+                    <div class="kpi-value" id="tiktok-kpi1-val">R$ 826,41</div>
                 </div>
                 <div class="kpi-card" style="--accent: var(--positive)">
-                    <div class="kpi-label" id="tiktok-kpi2-label" contenteditable="true">Valor de Conversão</div>
-                    <div class="kpi-value" id="tiktok-kpi2-val" contenteditable="true">R$ 759,22</div>
+                    <div class="kpi-label" id="tiktok-kpi2-label">Valor de Conversão</div>
+                    <div class="kpi-value" id="tiktok-kpi2-val">R$ 759,22</div>
                 </div>
                 <div class="kpi-card" style="--accent: var(--warning)">
-                    <div class="kpi-label" id="tiktok-kpi3-label" contenteditable="true">ROAS</div>
-                    <div class="kpi-value badge-warning" style="display: inline-block; font-size: 1.75rem; border: none; background: transparent; padding: 0;" id="tiktok-kpi3-val" contenteditable="true">1,11</div>
+                    <div class="kpi-label" id="tiktok-kpi3-label">ROAS</div>
+                    <div class="kpi-value badge-warning" style="display: inline-block; font-size: 1.75rem; border: none; background: transparent; padding: 0;" id="tiktok-kpi3-val">1,11</div>
                 </div>
                 <div class="kpi-card" style="--accent: var(--tiktok-color)">
-                    <div class="kpi-label" id="tiktok-kpi4-label" contenteditable="true">Conversões (Vendas)</div>
-                    <div class="kpi-value" id="tiktok-kpi4-val" contenteditable="true">3</div>
+                    <div class="kpi-label" id="tiktok-kpi4-label">Conversões (Vendas)</div>
+                    <div class="kpi-value" id="tiktok-kpi4-val">3</div>
                 </div>
                 <div class="kpi-card" style="--accent: var(--tiktok-color)">
-                    <div class="kpi-label" id="tiktok-kpi5-label" contenteditable="true">Cliques no Link</div>
-                    <div class="kpi-value" id="tiktok-kpi5-val" contenteditable="true">16.269</div>
+                    <div class="kpi-label" id="tiktok-kpi5-label">Cliques no Link</div>
+                    <div class="kpi-value" id="tiktok-kpi5-val">16.269</div>
                 </div>
             </div>
 
             <div class="glass-card">
                 <div class="card-header">
-                    <div class="card-title" id="tiktok-tbl-title" contenteditable="true">
+                    <div class="card-title" id="tiktok-tbl-title">
                         <div class="card-title-icon" style="background: var(--tiktok-color)"></div>
                         Tabela de Campanhas - TikTok Ads
                     </div>
@@ -1711,14 +1732,14 @@
         <section id="consolidado-plataformas" class="section-block">
             <div class="dash-header">
                 <div>
-                    <h2 id="consolidado-p-h2" contenteditable="true">Resumo por Rede/Plataforma</h2>
-                    <p id="consolidado-p-p" contenteditable="true">Comparação detalhada de performance entre Meta Ads, Google Ads e TikTok Ads</p>
+                    <h2 id="consolidado-p-h2">Resumo por Rede/Plataforma</h2>
+                    <p id="consolidado-p-p">Comparação detalhada de performance entre Meta Ads, Google Ads e TikTok Ads</p>
                 </div>
             </div>
 
             <div class="glass-card">
                 <div class="card-header">
-                    <div class="card-title" id="consolidado-p-tbl-title" contenteditable="true">
+                    <div class="card-title" id="consolidado-p-tbl-title">
                         <div class="card-title-icon"></div>
                         Tabela Comparativa de Canais
                     </div>
@@ -1799,43 +1820,43 @@
         <section id="consolidado-geral" class="section-block">
             <div class="dash-header">
                 <div>
-                    <h2 id="consolidado-g-h2" contenteditable="true">Resultados Globais</h2>
-                    <p id="consolidado-g-p" contenteditable="true">Performance consolidada de todas as plataformas de anúncios no mês de Maio 2026</p>
+                    <h2 id="consolidado-g-h2">Resultados Globais</h2>
+                    <p id="consolidado-g-p">Performance consolidada de todas as plataformas de anúncios no mês de Maio 2026</p>
                 </div>
             </div>
 
             <div class="kpi-grid">
                 <div class="kpi-card" style="--accent: var(--accent)">
-                    <div class="kpi-label" id="consolidado-g-kpi1-label" contenteditable="true">Investimento Total</div>
-                    <div class="kpi-value" id="consolidado-g-kpi1-val" contenteditable="true">R$ 45.004,40</div>
-                    <div class="kpi-subtext" id="consolidado-g-kpi1-sub" contenteditable="true">Valor investido no tráfego</div>
+                    <div class="kpi-label" id="consolidado-g-kpi1-label">Investimento Total</div>
+                    <div class="kpi-value" id="consolidado-g-kpi1-val">R$ 45.004,40</div>
+                    <div class="kpi-subtext" id="consolidado-g-kpi1-sub">Valor investido no tráfego</div>
                 </div>
                 <div class="kpi-card" style="--accent: var(--positive)">
-                    <div class="kpi-label" id="consolidado-g-kpi2-label" contenteditable="true">Faturamento Total</div>
-                    <div class="kpi-value" id="consolidado-g-kpi2-val" contenteditable="true">R$ 158.519,52</div>
-                    <div class="kpi-subtext" id="consolidado-g-kpi2-sub" contenteditable="true">Valor total retornado</div>
+                    <div class="kpi-label" id="consolidado-g-kpi2-label">Faturamento Total</div>
+                    <div class="kpi-value" id="consolidado-g-kpi2-val">R$ 158.519,52</div>
+                    <div class="kpi-subtext" id="consolidado-g-kpi2-sub">Valor total retornado</div>
                 </div>
                 <div class="kpi-card" style="--accent: var(--positive)">
-                    <div class="kpi-label" id="consolidado-g-kpi3-label" contenteditable="true">ROAS Geral</div>
-                    <div class="kpi-value badge-positive" style="display: inline-block; font-size: 1.75rem; border: none; background: transparent; padding: 0;" id="consolidado-g-kpi3-val" contenteditable="true">3,52</div>
-                    <div class="kpi-subtext" id="consolidado-g-kpi3-sub" contenteditable="true">Retorno médio sobre anúncio</div>
+                    <div class="kpi-label" id="consolidado-g-kpi3-label">ROAS Geral</div>
+                    <div class="kpi-value badge-positive" style="display: inline-block; font-size: 1.75rem; border: none; background: transparent; padding: 0;" id="consolidado-g-kpi3-val">3,52</div>
+                    <div class="kpi-subtext" id="consolidado-g-kpi3-sub">Retorno médio sobre anúncio</div>
                 </div>
                 <div class="kpi-card" style="--accent: var(--accent)">
-                    <div class="kpi-label" id="consolidado-g-kpi4-label" contenteditable="true">Vendas (Site)</div>
-                    <div class="kpi-value" id="consolidado-g-kpi4-val" contenteditable="true">564</div>
-                    <div class="kpi-subtext" id="consolidado-g-kpi4-sub" contenteditable="true">Total de conversões registradas</div>
+                    <div class="kpi-label" id="consolidado-g-kpi4-label">Vendas (Site)</div>
+                    <div class="kpi-value" id="consolidado-g-kpi4-val">564</div>
+                    <div class="kpi-subtext" id="consolidado-g-kpi4-sub">Total de conversões registradas</div>
                 </div>
                 <div class="kpi-card" style="--accent: var(--accent)">
-                    <div class="kpi-label" id="consolidado-g-kpi5-label" contenteditable="true">Mensagens</div>
-                    <div class="kpi-value" id="consolidado-g-kpi5-val" contenteditable="true">2.129</div>
-                    <div class="kpi-subtext" id="consolidado-g-kpi5-sub" contenteditable="true">Leads/contatos gerados</div>
+                    <div class="kpi-label" id="consolidado-g-kpi5-label">Mensagens</div>
+                    <div class="kpi-value" id="consolidado-g-kpi5-val">2.129</div>
+                    <div class="kpi-subtext" id="consolidado-g-kpi5-sub">Leads/contatos gerados</div>
                 </div>
             </div>
 
             <!-- Conversion Funnel Card -->
             <div class="glass-card">
                 <div class="card-header">
-                    <div class="card-title" id="funnel-card-title" contenteditable="true">
+                    <div class="card-title" id="funnel-card-title">
                         <div class="card-title-icon" style="background: var(--accent)"></div>
                         Funil de Conversão Global
                     </div>
@@ -1843,27 +1864,27 @@
                 
                 <div class="funnel-container">
                     <div class="funnel-stage" style="--funnel-color: #0088cc;">
-                        <div class="funnel-label" id="funnel-lbl1" contenteditable="true">Impressões</div>
+                        <div class="funnel-label" id="funnel-lbl1">Impressões</div>
                         <div class="funnel-bar" style="width: 100%;">
-                            <div class="funnel-value" id="funnel-val1" contenteditable="true">1.951.758</div>
+                            <div class="funnel-value" id="funnel-val1">1.951.758</div>
                         </div>
                     </div>
                     <div class="funnel-stage" style="--funnel-color: #00d2ff; --accent-rgb: 0, 210, 255;">
-                        <div class="funnel-label" id="funnel-lbl2" contenteditable="true">Cliques (CTR: 3,55%)</div>
+                        <div class="funnel-label" id="funnel-lbl2">Cliques (CTR: 3,55%)</div>
                         <div class="funnel-bar" style="width: 65%;">
-                            <div class="funnel-value" id="funnel-val2" contenteditable="true">79.367</div>
+                            <div class="funnel-value" id="funnel-val2">79.367</div>
                         </div>
                     </div>
                     <div class="funnel-stage" style="--funnel-color: #ffd600; --accent-rgb: 255, 214, 0;">
-                        <div class="funnel-label" id="funnel-lbl3" contenteditable="true">Visitas & Leads (Mensagens)</div>
+                        <div class="funnel-label" id="funnel-lbl3">Visitas & Leads (Mensagens)</div>
                         <div class="funnel-bar" style="width: 45%;">
-                            <div class="funnel-value" id="funnel-val3" contenteditable="true">33.555 (Visitas + Leads)</div>
+                            <div class="funnel-value" id="funnel-val3">33.555 (Visitas + Leads)</div>
                         </div>
                     </div>
                     <div class="funnel-stage" style="--funnel-color: #00e676; --accent-rgb: 0, 230, 118;">
-                        <div class="funnel-label" id="funnel-lbl4" contenteditable="true">Vendas Efetuadas</div>
+                        <div class="funnel-label" id="funnel-lbl4">Vendas Efetuadas</div>
                         <div class="funnel-bar" style="width: 25%;">
-                            <div class="funnel-value" id="funnel-val4" contenteditable="true">564</div>
+                            <div class="funnel-value" id="funnel-val4">564</div>
                         </div>
                     </div>
                 </div>
@@ -1874,30 +1895,30 @@
         <section id="next-steps" class="section-block">
             <div class="dash-header">
                 <div>
-                    <h2 id="next-main-h2" contenteditable="true">Próximos Passos</h2>
-                    <p id="next-main-p" contenteditable="true">Próximas ações e estratégias de mídia planejadas para o mês de Junho</p>
+                    <h2 id="next-main-h2">Próximos Passos</h2>
+                    <p id="next-main-p">Próximas ações e estratégias de mídia planejadas para o mês de Junho</p>
                 </div>
             </div>
 
             <div class="glass-card">
                 <div class="card-header">
-                    <div class="card-title" id="next-tbl-title" contenteditable="true">
+                    <div class="card-title" id="next-tbl-title">
                         <div class="card-title-icon" style="background: var(--accent)"></div>
                         Planejamento Estratégico & Insights
                     </div>
                 </div>
                 <div style="padding: 1rem 0;">
-                    <p style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 1.5rem; outline: none;" id="next-summary-intro" contenteditable="true">
+                    <p style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 1.5rem; outline: none;" id="next-summary-intro">
                         Nas campanhas de Maio geramos um total global de <strong>564 conversões (vendas)</strong> e <strong>2.129 mensagens (leads)</strong>, com faturamento total de <strong>R$ 158.519,52</strong> sobre um investimento de <strong>R$ 45.004,40</strong>, resultando em um <strong>ROAS Geral de 3,52</strong>.
                     </p>
                     <div class="strategy-container">
                         <div class="strategy-block" style="background: rgba(0, 240, 255, 0.03); border-color: rgba(0, 240, 255, 0.15);">
-                            <h4 id="next-block1-h4" contenteditable="true">Otimização de Custos e Públicos (Meta Ads)</h4>
-                            <p style="font-size: 1rem;" id="next-block1-p" contenteditable="true">Identificamos campanhas com excelente retorno (como <strong>[MM] [BLOQUEADOR DE CARBO] [CONVERSÃO SITE] 1</strong> com ROAS de 5,60 e <strong>[MM] [PURCHASE] [DNF-10] 4</strong> com ROAS de 5,08). Focaremos o orçamento de Junho escalando estas verticais, enquanto reduziremos ou pausaremos campanhas com custo/lead acima da média aceitável.</p>
+                            <h4 id="next-block1-h4">Otimização de Custos e Públicos (Meta Ads)</h4>
+                            <p style="font-size: 1rem;" id="next-block1-p">Identificamos campanhas com excelente retorno (como <strong>[MM] [BLOQUEADOR DE CARBO] [CONVERSÃO SITE] 1</strong> com ROAS de 5,60 e <strong>[MM] [PURCHASE] [DNF-10] 4</strong> com ROAS de 5,08). Focaremos o orçamento de Junho escalando estas verticais, enquanto reduziremos ou pausaremos campanhas com custo/lead acima da média aceitável.</p>
                         </div>
                         <div class="strategy-block" style="background: rgba(0, 230, 118, 0.03); border-color: rgba(0, 230, 118, 0.15);">
-                            <h4 id="next-block2-h4" contenteditable="true">Expansão de Canais de Alta Conversão (Google Ads)</h4>
-                            <p style="font-size: 1rem;" id="next-block2-p" contenteditable="true">O Google Ads demonstrou uma performance excelente neste mês de Maio com um <strong>ROAS de 8,14</strong>. Há uma margem clara para aumentar o orçamento de maneira controlada nas campanhas de P-Max e institucional de forma a impulsionar o faturamento global da Biotipo.</p>
+                            <h4 id="next-block2-h4">Expansão de Canais de Alta Conversão (Google Ads)</h4>
+                            <p style="font-size: 1rem;" id="next-block2-p">O Google Ads demonstrou uma performance excelente neste mês de Maio com um <strong>ROAS de 8,14</strong>. Há uma margem clara para aumentar o orçamento de maneira controlada nas campanhas de P-Max e institucional de forma a impulsionar o faturamento global da Biotipo.</p>
                         </div>
                     </div>
                 </div>
@@ -1907,17 +1928,17 @@
         <!-- FINALIZATION SECTION -->
         <section id="finalizacao" class="section-block">
             <div class="final-presentation-block">
-                <h2 class="thank-you-title" id="thanks-main-title" contenteditable="true">Muito obrigado pela parceria!</h2>
+                <h2 class="thank-you-title" id="thanks-main-title">Muito obrigado pela parceria!</h2>
 
                 <div class="final-branding-card" style="background: transparent; border: none; padding: 0; margin-top: 0;">
                     <!-- Closing Signature Block -->
                     <div class="closing-footer-layout">
                         <img src="logo-quantika.png" style="height: 35px; object-fit: contain; filter: drop-shadow(0 0 5px rgba(0,240,255,0.3));" alt="QUÂNTIKA Logo">
-                        <div class="footer-logo-mike" style="margin-left: -0.5rem;" id="thanks-logo-text" contenteditable="true">QUÂNTIKA</div>
+                        <div class="footer-logo-mike" style="margin-left: -0.5rem;" id="thanks-logo-text">QUÂNTIKA</div>
                         <div class="closing-divider"></div>
                         <div style="text-align: left; font-size: 0.8rem; color: var(--text-muted);">
-                            <strong style="color: #fff; display: block; margin-bottom: 0.25rem;" id="thanks-biotipo-text" contenteditable="true">BIOTIPO</strong>
-                            <span id="thanks-sub-date" contenteditable="true">Gestão de Mídia & Analytics | Maio 2026</span>
+                            <strong style="color: #fff; display: block; margin-bottom: 0.25rem;" id="thanks-biotipo-text">BIOTIPO</strong>
+                            <span id="thanks-sub-date">Gestão de Mídia & Analytics | Maio 2026</span>
                         </div>
                     </div>
                 </div>
@@ -1927,25 +1948,6 @@
 </div>
 
 <script>
-    // LocalStorage persistence for contenteditable elements
-    document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll('[contenteditable="true"]').forEach(el => {
-            const id = el.id;
-            if (!id) return;
-            
-            // Restore from localStorage
-            const saved = localStorage.getItem("editable_" + id);
-            if (saved !== null) {
-                el.innerHTML = saved;
-            }
-            
-            // Save to localStorage on input change
-            el.addEventListener("input", () => {
-                localStorage.setItem("editable_" + id, el.innerHTML);
-            });
-        });
-    });
-
     // Fullscreen presentation API trigger
     function toggleFullScreen() {
         if (!document.fullscreenElement) {
@@ -1959,28 +1961,9 @@
         }
     }
 
-    // Sidebar Mobile Toggle
-    const sidebar = document.querySelector('.sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    const menuToggle = document.getElementById('menuToggleBtn');
-
-    function toggleSidebar() {
-        sidebar.classList.toggle('active');
-        overlay.classList.toggle('active');
-    }
-
-    if (menuToggle) {
-        menuToggle.addEventListener('click', toggleSidebar);
-    }
-    if (overlay) {
-        overlay.addEventListener('click', toggleSidebar);
-    }
-
     // Navigation routing logic
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', function(e) {
-            if (e.target.hasAttribute('contenteditable') || e.target.closest('[contenteditable="true"]')) return;
-            
             e.preventDefault();
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             this.classList.add('active');
@@ -1993,76 +1976,16 @@
                 }
             });
 
-            // Close mobile menu if open
-            if (sidebar.classList.contains('active')) {
-                toggleSidebar();
+            // Center active item in horizontal scrollbar on mobile
+            if (window.innerWidth <= 900) {
+                const navList = document.getElementById('sidebarNavList');
+                const scrollLeft = this.offsetLeft - (navList.offsetWidth / 2) + (this.offsetWidth / 2);
+                navList.scrollTo({ left: scrollLeft, behavior: 'smooth' });
             }
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     });
-
-    // Drag and Drop ordering for navigation links
-    let dragSourceEl = null;
-
-    function handleDragStart(e) {
-        dragSourceEl = e.currentTarget;
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/html', e.currentTarget.innerHTML);
-        e.dataTransfer.setData('text/plain', e.currentTarget.getAttribute('data-target'));
-        e.currentTarget.style.opacity = '0.4';
-    }
-
-    // Handle drag events
-    function handleDragOver(e) {
-        if (e.preventDefault) {
-            e.preventDefault();
-        }
-        e.currentTarget.classList.add('drag-over');
-        e.dataTransfer.dropEffect = 'move';
-        return false;
-    }
-
-    function handleDragLeave(e) {
-        e.currentTarget.classList.remove('drag-over');
-    }
-
-    function handleDrop(e) {
-        if (e.stopPropagation) {
-            e.stopPropagation();
-        }
-        
-        if (dragSourceEl !== e.currentTarget) {
-            const sourceHTML = dragSourceEl.innerHTML;
-            const sourceTarget = dragSourceEl.getAttribute('data-target');
-            
-            dragSourceEl.innerHTML = e.currentTarget.innerHTML;
-            dragSourceEl.setAttribute('data-target', e.currentTarget.getAttribute('data-target'));
-            
-            e.currentTarget.innerHTML = sourceHTML;
-            e.currentTarget.setAttribute('data-target', sourceTarget);
-            
-            const wasActive = e.currentTarget.classList.contains('active');
-            const sourceActive = dragSourceEl.classList.contains('active');
-            
-            if (wasActive) {
-                e.currentTarget.classList.remove('active');
-                dragSourceEl.classList.add('active');
-            } else if (sourceActive) {
-                dragSourceEl.classList.remove('active');
-                e.currentTarget.classList.add('active');
-            }
-        }
-        e.currentTarget.classList.remove('drag-over');
-        return false;
-    }
-
-    function handleDragEnd(e) {
-        e.currentTarget.style.opacity = '1';
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.classList.remove('drag-over');
-        });
-    }
 </script>
 
 </body>
